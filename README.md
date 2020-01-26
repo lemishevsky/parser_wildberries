@@ -1,0 +1,1 @@
+Парсер https://www.wildberries.ru/
