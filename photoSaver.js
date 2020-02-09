@@ -1,12 +1,24 @@
 const fs = require('fs');
 const request = require('request');
 
-function photoSaver(link) {
-  const name = link.slice(link.lastIndexOf('/') + 1);
-  const nameDir = name.split('-')[0];
-  fs.mkdirSync('pictures');
+function photoSaver(arrOfLink) {
+  const nameDir = arrOfLink[0].slice(arrOfLink[0].lastIndexOf('/') + 1).split('-')[0];
+  try {
+    if (!fs.existsSync('pictures')) {
+      fs.mkdirSync('pictures');
+      console.log('Directory pictures is create');
+    }
+  } catch (err) {
+    console.error(err);
+  }
+
   fs.mkdirSync(`pictures/${nameDir}`);
-  request(encodeURI(`https:${link}`)).pipe(fs.createWriteStream(`pictures/${nameDir}/${name}`));
+  console.log(`Directory pictures/${nameDir} is create`);
+  arrOfLink.forEach((link) => {
+    const name = link.slice(link.lastIndexOf('/') + 1);
+    request(encodeURI(`https:${link}`)).pipe(fs.createWriteStream(`pictures/${nameDir}/${name}`));
+    console.log(`Picture ${name} is saved`);
+  });
 }
 
-photoSaver('//img2.wbstatic.net/big/new/10590000/10595148-4.jpg');
+module.exports = photoSaver;

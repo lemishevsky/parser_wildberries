@@ -1,5 +1,7 @@
 const request = require('request-promise');
 const parse = require('cheerio');
+const urlGrabber = require('./pictureUrlGrabber');
+const photoSaver = require('./photoSaver');
 
 let counter = 0;
 
@@ -11,6 +13,8 @@ function generateId() {
 async function parsePage(link) {
   try {
     const html = await request(encodeURI(link));
+    const pics = await urlGrabber(html);
+    photoSaver(pics);
     const article = parse('.j-article', html)
       .text()
       .trim();
@@ -42,7 +46,7 @@ async function parsePage(link) {
       picture: `papka/${article}-1`,
       url: link,
     };
-    // console.log(result);
+    console.log(result);
     return result;
   } catch (err) {
     return err;
