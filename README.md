@@ -11,4 +11,4 @@ npm install
 ```shell
 node runner <URL>
 ```
-URL вида https://www.wildberries.ru/catalog/...
+URL вида https://www.wildberries.ru/brands/angelo-bonetti/bryuki
