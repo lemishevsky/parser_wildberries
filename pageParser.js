@@ -1,8 +1,8 @@
 const request = require('request-promise');
 const parse = require('cheerio');
+const path = require('path');
 const urlGrabber = require('./pictureUrlGrabber');
 const photoSaver = require('./photoSaver');
-const path = require('path');
 
 let counter = 0;
 
@@ -35,9 +35,13 @@ async function parsePage(link) {
       color: parse('.color > span', html)
         .text()
         .trim(),
-      size: parse('.j-size-list', html)
+      size: parse('.j-sizes-info-popup-sizetable-tab', html)
         .text()
-        .trim(),
+        .trim()
+        // .join('')
+        // .split('/n')
+        // .filter((elem) => elem.length > 0)
+      ,
       description: parse('.j-description p', html)
         .text()
         .trim(),
@@ -47,7 +51,7 @@ async function parsePage(link) {
       picture: path.resolve('pictures', article),
       url: link,
     };
-    console.log('Parse successful!');
+    console.log(`Parse ${link} successful!`);
     return result;
   } catch (err) {
     return err;
