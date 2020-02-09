@@ -6,12 +6,12 @@ async function parseSearch(link) {
     const html = await request(encodeURI(link));
     const links = [];
     const $ = cheerio.load(html);
-
     const smthng = $('.j-products-container');
-    const list = $('.ref_goods_n_p', smthng).each((idx, elem) => {
+    $('.ref_goods_n_p', smthng).each((idx, elem) => {
       const productLink = $(elem).attr('href');
       links.push(productLink);
     });
+    console.log(links.length, 'products found');
     return links;
   } catch (err) {
     return err;
