@@ -2,6 +2,7 @@ const request = require('request-promise');
 const parse = require('cheerio');
 const urlGrabber = require('./pictureUrlGrabber');
 const photoSaver = require('./photoSaver');
+const path = require('path');
 
 let counter = 0;
 
@@ -43,10 +44,10 @@ async function parsePage(link) {
       modelParams: parse('.params', html)
         .text()
         .trim(),
-      picture: `papka/${article}-1`,
+      picture: path.resolve('pictures', article),
       url: link,
     };
-    console.log(result);
+    console.log('Parse successful!');
     return result;
   } catch (err) {
     return err;
