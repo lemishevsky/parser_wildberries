@@ -1,5 +1,14 @@
 const ExcelJS = require('exceljs');
-const fileName = 'Result';
+const fileName = 'result';
+
+const date = new Date();
+const year = date.getFullYear() % 100;
+let month = date.getMonth() + 1;
+if (month < 10) month = '0' + month;
+const today = date.getDate();
+const dateString = year + month + today;
+
+let counterId = 1;
 
 async function createXLSX(arrayOfObj) {
   try {
@@ -18,20 +27,28 @@ async function createXLSX(arrayOfObj) {
     ];
     arrayOfObj.map((elem) => {
       sheet.addRow({
-        id: elem.id,
+        id: counterId,
         brand: elem.brand,
         price: elem.price,
         color: elem.color,
         size: elem.size,
         description: elem.description,
         modelParams: elem.modelParams,
-        picture: elem.picture,
-        url: elem.url,
+        picture: {
+          text: elem.picture,
+          hyperlink: elem.picture
+        },
+        url: {
+          text: elem.url,
+          hyperlink: elem.url,
+          tooltip: elem.url
+        },
       });
+      counterId += 1;
     });
-    workbook.xlsx.writeFile(`${fileName}.xlsx`)
+    workbook.xlsx.writeFile(`${fileName + '_' + dateString}.xlsx`)
       .then(() => {
-        console.log(`${fileName}.xlsx created!`);
+        console.log(`${fileName + '_' + dateString}.xlsx created!`);
       });
     return arrayOfObj;
   } catch (err) {

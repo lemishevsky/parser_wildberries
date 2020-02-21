@@ -4,13 +4,6 @@ const path = require('path');
 const urlGrabber = require('./pictureUrlGrabber');
 const photoSaver = require('./photoSaver');
 
-let counter = 0;
-
-function generateId() {
-  counter += 1;
-  return counter;
-}
-
 async function parsePage(link) {
   try {
     const html = await request(encodeURI(link));
@@ -21,7 +14,6 @@ async function parsePage(link) {
       .trim();
 
     const result = {
-      id: generateId(),
       brand: parse('.brand', html)
         .text()
         .trim(),
@@ -37,11 +29,7 @@ async function parsePage(link) {
         .trim(),
       size: parse('.j-sizes-info-popup-sizetable-tab', html)
         .text()
-        .trim()
-        // .join('')
-        // .split('/n')
-        // .filter((elem) => elem.length > 0)
-      ,
+        .trim(),
       description: parse('.j-description p', html)
         .text()
         .trim(),
