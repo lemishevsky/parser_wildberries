@@ -14,8 +14,10 @@ async function photoSaver(arrOfLink) {
     console.log('Directory', '\x1b[31m', `"${nameDir}/"`, '\x1b[0m', 'created');
     arrOfLink.map((link) => {
       const name = link.slice(link.lastIndexOf('/') + 1);
-      request(encodeURI(`https:${link}`)).pipe(fs.createWriteStream(`pictures/${nameDir}/${name}`));
-      console.log('Picture', '\x1b[34m', name, '\x1b[0m', 'is saved'); 
+      setTimeout(() => {
+        request(encodeURI(`https:${link}`)).pipe(fs.createWriteStream(`pictures/${nameDir}/${name}`));
+        console.log('Picture', '\x1b[34m', name, '\x1b[0m', 'is saved');
+      }, 5000 * Math.random());
     });
   } catch (err) {
     console.error(err);
