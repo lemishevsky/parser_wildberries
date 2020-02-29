@@ -47,7 +47,7 @@ async function createXLSX(arrayOfObj) {
         // hSize: elem.hSize,
         description: elem.description,
         picture: {
-          text: elem.picture,
+          text: `pictures/${elem.article}`,
           hyperlink: elem.picture
         },
         url: {
