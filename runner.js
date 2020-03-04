@@ -18,10 +18,10 @@ async function getParse(link) {
   const result = await Promise.all(links.map((elem, idx) => new Promise((resolve, reject) => {
     setTimeout(() => {
       resolve(parsePage(elem));
-      console.log(`\n There are still ${counter} items left\n`);
+      console.log(`\nThere are still ${counter} items left\n`);
       counter -= 1;
     },
-      8000 * idx)
+      Math.random() * 3000 * idx)
   })));
   return result;
 }

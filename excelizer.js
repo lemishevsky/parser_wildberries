@@ -5,8 +5,9 @@ const date = new Date();
 const year = date.getFullYear() % 100;
 let month = date.getMonth() + 1;
 if (month < 10) month = '0' + month;
-const today = date.getDate();
-const dateString = year + month + today;
+let today = date.getDate();
+if (today < 10) today = '0' + today;
+const dateString = year + '-' + month + '-' + today;
 
 let counterId = 1;
 
@@ -20,6 +21,7 @@ async function createXLSX(arrayOfObj) {
       { header: 'Article', key: 'article' },
       { header: 'Name', key: 'name' },
       { header: 'Type', key: 'type' },
+      { header: 'Gender', key: 'gender' },
       { header: 'Price', key: 'price' },
       { header: 'Color', key: 'color' },
       { header: 'Russian size', key: 'rusSize' },
@@ -38,6 +40,7 @@ async function createXLSX(arrayOfObj) {
         article: elem.article,
         name: elem.name,
         type: elem.type,
+        gender: elem.gender,
         price: elem.price,
         color: elem.color,
         rusSize: elem.rusSize.join(', '),

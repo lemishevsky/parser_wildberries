@@ -6,6 +6,9 @@ const photoSaver = require('./photoSaver');
 
 function sizeParser(page, article) {
   const rx = new RegExp('data: {[^\n]+');
+  const Male = new RegExp('Мужской', 'gi');
+  const Female = new RegExp('Женский', 'gi');
+  const gender = page.match(Male) || page.match(Female) || ['Нет'];
   const data = page.match(rx)[0].slice(6, -1);
   const obj = JSON.parse(data);
   const arrOfSizes = [];
@@ -22,6 +25,7 @@ function sizeParser(page, article) {
   const sizeObj = {
     rusSize: rusSize,
     manSize: manSize,
+    gender: gender[0]
     // cSize: '',
     // wSize: '',
     // hSize: '',
@@ -54,6 +58,7 @@ async function parsePage(link) {
       article,
       name,
       type,
+      gender: size.gender,
       price: parse('.final-cost', html)
         .text()
         .trim(),
