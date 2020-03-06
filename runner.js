@@ -1,6 +1,10 @@
 const parsePage = require('./pageParser');
 const parseSearch = require('./parseSearch');
 const createXLSX = require('./excelizer');
+const mongoose = require('mongoose');
+
+
+mongoose.connect('mongodb://localhost/parser_wildberries', { useNewUrlParser: true, useUnifiedTopology: true });
 
 console.log('Try to parse', process.argv[2]);
 
@@ -32,6 +36,7 @@ getParse(process.argv[2])
     console.log('\x1b[1m \x1b[34m');
     console.log(`WHOA! ${resolve.length} item was parsed!`);
     console.log('\x1b[0m');
+    mongoose.connection.close();
   })
   .catch(err => console.log(err));
 

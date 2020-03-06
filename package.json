@@ -20,6 +20,7 @@
   "dependencies": {
     "cheerio": "^1.0.0-rc.3",
     "exceljs": "^3.7.0",
+    "mongoose": "^5.9.3",
     "request": "^2.88.0",
     "request-promise": "^4.2.5"
   },

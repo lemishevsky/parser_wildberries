@@ -3,6 +3,7 @@ const parse = require('cheerio');
 const path = require('path');
 const urlGrabber = require('./pictureUrlGrabber');
 const photoSaver = require('./photoSaver');
+const Item = require('./model');
 
 function sizeParser(page, article) {
   const rx = new RegExp('data: {[^\n]+');
@@ -25,7 +26,7 @@ function sizeParser(page, article) {
   const sizeObj = {
     rusSize: rusSize,
     manSize: manSize,
-    gender: gender[0]
+    gender: gender[0].toLowerCase()
     // cSize: '',
     // wSize: '',
     // hSize: '',
@@ -47,7 +48,7 @@ async function parsePage(link) {
       .text()
       .trim();
 
-    const type = name.split(' ')[0];
+    const type = name.split(' ')[0].toLowerCase();
 
     const size = sizeParser(html, article);
 
@@ -77,6 +78,7 @@ async function parsePage(link) {
       url: link,
     };
     console.log(`Parse ${link} successful!`);
+    await Item.create(result);
     return result;
   } catch (err) {
     return err;
