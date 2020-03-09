@@ -11,6 +11,7 @@ const itemSchema = new mongoose.Schema({
   rusSize: Array,
   manSize: Array,
   description: String,
+  imgUrl: Array,
   picture: String,
   url: String
 });

@@ -2,7 +2,7 @@ const request = require('request-promise');
 const parse = require('cheerio');
 const path = require('path');
 const urlGrabber = require('./pictureUrlGrabber');
-const photoSaver = require('./photoSaver');
+
 const Item = require('./model');
 
 function sizeParser(page, article) {
@@ -38,7 +38,6 @@ async function parsePage(link) {
   try {
     const html = await request(encodeURI(link));
     const pics = await urlGrabber(html);
-    photoSaver(pics);
 
     const article = parse('.j-article', html)
       .text()
@@ -74,6 +73,7 @@ async function parsePage(link) {
       description: parse('.j-description p', html)
         .text()
         .trim(),
+      imgUrl: pics,
       picture: path.resolve('pictures', article),
       url: link,
     };

@@ -6,7 +6,7 @@ async function urlGrabber(html) {
     const links = part.map((item) => {
       return Object.values(item.attribs)[2];
     });
-    return links;
+    return links.map(elem => elem.slice(2));
   } catch (err) {
     return err;
   }

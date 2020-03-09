@@ -37,7 +37,6 @@ async function parseSearch(link) {
     const links = await linksCollector(pages);
 
     console.log(links.length, 'products found');
-    console.log(links);
 
     return links;
   } catch (err) {
