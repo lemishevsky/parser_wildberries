@@ -4,6 +4,7 @@ const photoSaver = require('./photoSaver');
 const createXLSX = require('./excelizer');
 const mongoose = require('mongoose');
 
+const Item = require('./model');
 
 mongoose.connect('mongodb://localhost/parser_wildberries', { useNewUrlParser: true, useUnifiedTopology: true });
 
@@ -26,12 +27,16 @@ async function getParse(link) {
       console.log(`\nThere are still ${counter} items left\n`);
       counter -= 1;
     },
-      Math.random() * 500 * idx)
+      500 * idx)
   })));
   return result;
 }
 
 getParse(process.argv[2])
+  .then(resolve => {
+    Item.insertMany(resolve);
+    return resolve
+  })
   .then((resolve) => {
     const arrOfPics = [];
     resolve.forEach(elem => arrOfPics.push(elem.imgUrl))
@@ -39,18 +44,20 @@ getParse(process.argv[2])
     console.log('\x1b[1m \x1b[34m');
     console.log(`${resolve.length} item was parsed!`);
     console.log('\x1b[0m');
-    mongoose.connection.close();
     return arrOfPics;
   })
   .then((resolve) => {
     let counter = resolve.flat(1).length;
     const numberOfPictures = counter;
     resolve.forEach((item, idx) => setTimeout(() => {
-      photoSaver(item);
       console.log(`\nThere are still ${counter} pictures left\n`);
       counter -= item.length;
-      if (!counter) setTimeout(() => console.log(numberOfPictures, 'pictures are saved!'), 5000);
-    }, Math.random() * 3000 * idx));
+      photoSaver(item);
+      if (!counter) setTimeout(() => {
+        console.log(numberOfPictures, 'pictures are saved!');
+        mongoose.connection.close();
+      }, 5000);
+    }, ((3000 + Math.random() * 2000) * idx)));
   })
   .catch(err => console.log(err));
 

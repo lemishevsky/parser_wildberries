@@ -3,8 +3,6 @@ const parse = require('cheerio');
 const path = require('path');
 const urlGrabber = require('./pictureUrlGrabber');
 
-const Item = require('./model');
-
 function sizeParser(page, article) {
   const rx = new RegExp('data: {[^\n]+');
   const Male = new RegExp('Мужской', 'gi');
@@ -78,7 +76,6 @@ async function parsePage(link) {
       url: link,
     };
     console.log(`Parse ${link} successful!`);
-    await Item.create(result);
     return result;
   } catch (err) {
     return err;
