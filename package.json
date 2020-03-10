@@ -19,6 +19,7 @@
   "homepage": "https://github.com/lemishevsky/parser_wildberries#readme",
   "dependencies": {
     "cheerio": "^1.0.0-rc.3",
+    "dotenv": "^8.2.0",
     "exceljs": "^3.7.0",
     "mongoose": "^5.9.3",
     "request": "^2.88.0",

@@ -6,7 +6,14 @@ const mongoose = require('mongoose');
 
 const Item = require('./model');
 
-mongoose.connect('mongodb://localhost/parser_wildberries', { useNewUrlParser: true, useUnifiedTopology: true });
+require("dotenv").config();
+
+let MongoKey = process.env.MONGO_ONLINE;
+
+mongoose.connect(MongoKey,
+  { useNewUrlParser: true, useUnifiedTopology: true });
+
+
 
 console.log('Try to parse', process.argv[2]);
 
@@ -34,7 +41,10 @@ async function getParse(link) {
 
 getParse(process.argv[2])
   .then(resolve => {
-    Item.insertMany(resolve);
+    Item.insertMany(resolve).then(() => {
+      mongoose.connection.close();
+      console.log("Items are saved in DB! Connection close!");
+    });
     return resolve
   })
   .then((resolve) => {
@@ -48,15 +58,10 @@ getParse(process.argv[2])
   })
   .then((resolve) => {
     let counter = resolve.flat(1).length;
-    const numberOfPictures = counter;
     resolve.forEach((item, idx) => setTimeout(() => {
       console.log(`\nThere are still ${counter} pictures left\n`);
       counter -= item.length;
       photoSaver(item);
-      if (!counter) setTimeout(() => {
-        console.log(numberOfPictures, 'pictures are saved!');
-        mongoose.connection.close();
-      }, 5000);
     }, ((3000 + Math.random() * 2000) * idx)));
   })
   .catch(err => console.log(err));
