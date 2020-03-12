@@ -2,6 +2,7 @@ const parsePage = require('./pageParser');
 const parseSearch = require('./parseSearch');
 const photoSaver = require('./photoSaver');
 const createXLSX = require('./excelizer');
+const dbChecker = require('./dbChecker');
 const mongoose = require('mongoose');
 
 const Item = require('./model');
@@ -26,7 +27,8 @@ console.log('Try to parse', process.argv[2]);
 // Try to parse with timeout
 
 async function getParse(link) {
-  const links = await parseSearch(link);
+  const preLinks = await parseSearch(link);
+  const links = await dbChecker(preLinks);
   let counter = links.length;
   const result = await Promise.all(links.map((elem, idx) => new Promise((resolve, reject) => {
     setTimeout(() => {

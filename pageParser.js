@@ -6,7 +6,7 @@ const urlGrabber = require('./pictureUrlGrabber');
 function sizeParser(page, article) {
   const rx = new RegExp('data: {[^\n]+');
   const Male = new RegExp('Мужской', 'gi');
-  const Female = new RegExp('Женский', 'gi');ась
+  const Female = new RegExp('Женский', 'gi');
   const gender = page.match(Male) || page.match(Female) || ['Нет'];
   const data = page.match(rx)[0].slice(6, -1);
   const obj = JSON.parse(data);
